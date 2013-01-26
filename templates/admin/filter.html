@@ -1,0 +1,40 @@
+{% load i18n %}
+<h3>{% blocktrans with filter_title=title %} By {{ filter_title }} {% endblocktrans %}</h3>
+<ul>
+
+<script type="text/javascript">
+(function($) {
+    $(document).ready(function($) {
+    	$('#changelist-filter a').each(function() {
+    		//alert(this.href);
+    		var q = getParameterByName('q');
+    		if(q.length > 0) {
+    			this.href = this.href + '&q=' + q;
+    		}
+    	});
+    });
+    
+    
+   
+})(django.jQuery);
+// Gets the query string value by parameter
+// from http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values
+function getParameterByName(name)
+{
+  name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+  var regexS = "[\\?&]" + name + "=([^&#]*)";
+  var regex = new RegExp(regexS);
+  var results = regex.exec(window.location.search);
+  if(results == null)
+    return "";
+  else
+    return decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+	
+
+</script>
+{% for choice in choices %}
+    <li{% if choice.selected %} class="selected"{% endif %}>
+    <a href="{{ choice.query_string|iriencode }}">{{ choice.display }}</a></li>
+{% endfor %}
+</ul>
